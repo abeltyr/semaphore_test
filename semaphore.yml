@@ -1,0 +1,21 @@
+version: v1.0
+name: Using a private Docker image
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+
+blocks:
+  - name: pushing private Docker image
+    task:
+      jobs:
+      - name: push container to Docker Hub
+        commands:
+          - checkout
+          - echo $DOCKER_PASSWORD | docker login --username "$DOCKER_USERNAME" --password-stdin
+          - docker build --tag="$DOCKER_USERNAME"/test
+          - docker images ls
+          - echo $DOCKER_PASSWORD | docker login --username "$DOCKER_USERNAME" --password-stdin
+          - docker push "$DOCKER_USERNAME"/test":tag
+      secrets:
+      - name: docker-hub
