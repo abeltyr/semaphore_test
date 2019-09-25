@@ -55,19 +55,16 @@ blocks:
           - docker images
       secrets:
           - name: Dockerhub
-
-          version: v1.0
-blocks:
   - name: Using private Docker image
     task:
       jobs:
       - name: Run container from Docker Hub
         commands:
           - checkout
-          - docker build -t "$DOCKER_USERNAME"/test .
+          - docker build -t "$DOCKER_USERNAME"/myimage .
           - echo $DOCKER_PASSWORD | docker login --username "$DOCKER_USERNAME" --password-stdin
-          - docker push "$DOCKER_USERNAME"/test
+          - docker push "$DOCKER_USERNAME"/myimage
           - docker images
-          - docker run "$DOCKER_USERNAME"/test
+          - docker run "$DOCKER_USERNAME"/myimage
       secrets:
       - name: Dockerhub
