@@ -6,16 +6,33 @@ agent:
     os_image: ubuntu1804
 
 blocks:
-  - name: pushing private Docker image
+  - name: checking
     task:
       jobs:
       - name: push container to Docker Hub
         commands:
           - checkout
-          - docker build --tag="$DOCKER_USERNAME"/test
-          - docker images ls
-          - echo $DOCKER_PASSWORD | docker login --username "$DOCKER_USERNAME" --password-stdin
-          - docker push "$DOCKER_USERNAME"/test:v1
+blocks:
+  - name: building private Docker image as "$DOCKER_USERNAME"
+    task:
+      jobs:
+      - name: push container to Docker Hub
+        commands:
+           - docker build --tag="$DOCKER_USERNAME"/test
+      secrets:
+        - name: Dockerhub
+blocks:
+  - name: checking Docker image
+    task:
+      jobs:
+      - name: push container to Docker Hub
+      commands:
+           - docker images ls
       secrets:
         - name: Dockerhub
 
+
+
+        
+          # - echo $DOCKER_PASSWORD | docker login --username "$DOCKER_USERNAME" --password-stdin
+          # - docker push "$DOCKER_USERNAME"/test:v1
