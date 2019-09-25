@@ -53,3 +53,21 @@ blocks:
           - checkout
           - docker build -t awesome-image .
           - docker images
+      secrets:
+          - name: Dockerhub
+
+          version: v1.0
+blocks:
+  - name: Using private Docker image
+    task:
+      jobs:
+      - name: Run container from Docker Hub
+        commands:
+          - checkout
+          - docker build -t "$DOCKER_USERNAME"/test .
+          - echo $DOCKER_PASSWORD | docker login --username "$DOCKER_USERNAME" --password-stdin
+          - docker push "$DOCKER_USERNAME"/test
+          - docker images
+          - docker run "$DOCKER_USERNAME"/test
+      secrets:
+      - name: Dockerhub
