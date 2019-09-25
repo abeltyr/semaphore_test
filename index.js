@@ -9,5 +9,5 @@ app.get("/", (req, res) => {
 
 app.listen(3000 ? 3000 : 5000, err => {
     if (err) debug(err);
-    else debug(`${Test} has started on port ${3000}`);
+    else debug("Testing");
 });
