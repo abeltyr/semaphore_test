@@ -1,38 +1,55 @@
+# version: v1.0
+# name: Using a private Docker image
+# agent:
+#   machine:
+#     type: e1-standard-2
+#     os_image: ubuntu1804
+
+#   blocks:
+#     - name: checking
+#       task:
+#         jobs:
+#         - name: push container to Docker Hub
+#           commands:
+#             - checkout
+#   blocks:
+#     - name: building private Docker image as "$DOCKER_USERNAME"
+#       task:
+#         jobs:
+#         - name: push container to Docker Hub
+#           commands:
+#             - docker build --tag="$DOCKER_USERNAME"/test
+#         secrets:
+#           - name: Dockerhub
+#   blocks:
+#     - name: checking Docker image
+#       task:
+#         jobs:
+#         - name: push container to Docker Hub
+#         commands:
+#             - docker images ls
+#         secrets:
+#           - name: Dockerhub
+
+
+
+        
+#           # - echo $DOCKER_PASSWORD | docker login --username "$DOCKER_USERNAME" --password-stdin
+#           # - docker push "$DOCKER_USERNAME"/test:v1
+
 version: v1.0
-name: Using a private Docker image
+name: Hello Docker
 agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu1804
 
-  blocks:
-    - name: checking
-      task:
-        jobs:
-        - name: push container to Docker Hub
-          commands:
-            - checkout
-  blocks:
-    - name: building private Docker image as "$DOCKER_USERNAME"
-      task:
-        jobs:
-        - name: push container to Docker Hub
-          commands:
-            - docker build --tag="$DOCKER_USERNAME"/test
-        secrets:
-          - name: Dockerhub
-  blocks:
-    - name: checking Docker image
-      task:
-        jobs:
-        - name: push container to Docker Hub
+blocks:
+  - name: "Build"
+    task:
+      jobs:
+      - name: Docker build
         commands:
-            - docker images ls
-        secrets:
-          - name: Dockerhub
-
-
-
-        
-          # - echo $DOCKER_PASSWORD | docker login --username "$DOCKER_USERNAME" --password-stdin
-          # - docker push "$DOCKER_USERNAME"/test:v1
+          - checkout
+          - docker build -t awesome-image .
+          - docker images
