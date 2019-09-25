@@ -16,6 +16,6 @@ blocks:
           - docker images ls
           - echo $DOCKER_PASSWORD | docker login --username "$DOCKER_USERNAME" --password-stdin
           - docker push "$DOCKER_USERNAME"/test:v1
-      - secrets:
+      secrets:
         - name: Dockerhub
 
