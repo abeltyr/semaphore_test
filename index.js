@@ -7,7 +7,7 @@ app.get("/", (req, res) => {
 });
 
 
-app.listen(3000 ? 3000 : 5000, err => {
-    if (err) debug(err);
+app.listen(3000, err => {
+    if (err) debug("err");
     else debug("Testing");
 });

@@ -1,42 +1,3 @@
-# version: v1.0
-# name: Using a private Docker image
-# agent:
-#   machine:
-#     type: e1-standard-2
-#     os_image: ubuntu1804
-
-#   blocks:
-#     - name: checking
-#       task:
-#         jobs:
-#         - name: push container to Docker Hub
-#           commands:
-#             - checkout
-#   blocks:
-#     - name: building private Docker image as "$DOCKER_USERNAME"
-#       task:
-#         jobs:
-#         - name: push container to Docker Hub
-#           commands:
-#             - docker build --tag="$DOCKER_USERNAME"/test
-#         secrets:
-#           - name: Dockerhub
-#   blocks:
-#     - name: checking Docker image
-#       task:
-#         jobs:
-#         - name: push container to Docker Hub
-#         commands:
-#             - docker images ls
-#         secrets:
-#           - name: Dockerhub
-
-
-
-        
-#           # - echo $DOCKER_PASSWORD | docker login --username "$DOCKER_USERNAME" --password-stdin
-#           # - docker push "$DOCKER_USERNAME"/test:v1
-
 version: v1.0
 name: Hello Docker
 agent:
@@ -45,26 +6,15 @@ agent:
     os_image: ubuntu1804
 
 blocks:
-  - name: "Build"
-    task:
-      jobs:
-      - name: Docker build
-        commands:
-          - checkout
-          - docker build -t awesome-image .
-          - docker images
-      secrets:
-          - name: Dockerhub
   - name: Using private Docker image
     task:
       jobs:
       - name: Run container from Docker Hub
         commands:
           - checkout
-          - docker build -t "$DOCKER_USERNAME"/test .
+          - docker build -t "$DOCKER_USERNAME"/test:v1 .
           - echo $DOCKER_PASSWORD | docker login --username "$DOCKER_USERNAME" --password-stdin
-          - docker push "$DOCKER_USERNAME"/test
+          - docker push "$DOCKER_USERNAME"/test:v1
           - docker images
-          - docker run "$DOCKER_USERNAME"/test
       secrets:
       - name: Dockerhub
